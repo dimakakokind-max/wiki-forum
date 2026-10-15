@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CICADA WIKI — Гугологическая энциклопедия</title>
+<style>
+/* ==================== ПЕРЕМЕННЫЕ ТЕМ ==================== */
+:root {
+    --bg: #0a0a0a;
+    --card-bg: #111;
+    --text: #00ff41;
+    --accent: #00ff41;
+    --accent2: #ff0041;
+    --border: #00ff4133;
+    --shadow: #00ff4133;
+    --muted: #00ff4188;
+}
+
+body.theme-light {
+    --bg: #f5f5f5;
+    --card-bg: #ffffff;
+    --text: #111111;
+    --accent: #0066cc;
+    --accent2: #cc0000;
+    --border: #0066cc33;
+    --shadow: #0066cc33;
+    --muted: #0066cc88;
+}
+
+body.theme-matrix {
+    --bg: #000000;
+    --card-bg: #001100;
+    --text: #00ff00;
+    --accent: #00ff00;
+    --accent2: #00aa00;
+    --border: #00ff0033;
+    --shadow: #00ff0033;
+    --muted: #00ff0088;
+}
+
+body.theme-amber {
+    --bg: #1a0f00;
+    --card-bg: #2a1800;
+    --text: #ffb000;
+    --accent: #ffb000;
+    --accent2: #ff6600;
+    --border: #ffb00033;
+    --shadow: #ffb00033;
+    --muted: #ffb00088;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* ==================== НАВИГАЦИЯ ==================== */
+nav {
+    position: sticky;
+    top: 0;
+    background: var(--card-bg);
+    border-bottom: 2px solid var(--accent);
+    padding: 15px 30px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.nav-logo {
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    cursor: pointer;
+    text-shadow: 0 0 10px var(--accent);
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 8px 15px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+}
+
+/* ==================== НАСТРОЙКИ ==================== */
+.settings-btn {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-btn:hover {
+    box-shadow: 0 0 20px var(--accent);
+    transform: rotate(90deg);
+}
+
+.settings-panel {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 320px;
+    height: 100%;
+    background: var(--card-bg);
+    border-left: 2px solid var(--accent);
+    padding: 30px;
+    z-index: 1000;
+    transition: right 0.4s ease;
+    overflow-y: auto;
+}
+
+.settings-panel.active { right: 0; }
+
+.settings-panel h3 {
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    color: var(--accent);
+}
+
+.theme-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    border-radius: 4px;
+}
+
+.theme-btn:hover, .theme-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+}
+
+.close-settings {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ==================== ГЛАВНАЯ ==================== */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.4s; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.hero .logo {
+    font-size: 80px;
+    animation: pulse 2s infinite;
+}
+
+.hero h1 {
+    font-size: 42px;
+    letter-spacing: 10px;
+    text-shadow: 0 0 30px var(--accent);
+    margin: 20px 0;
+}
+
+.hero p {
+    font-size: 14px;
+    opacity: 0.7;
+    letter-spacing: 3px;
+    margin: 10px 0;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* ==================== ПОИСК ==================== */
+.search-box {
+    max-width: 600px;
+    margin: 30px auto;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 18px 25px;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.search-box input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px var(--shadow);
+}
+
+/* ==================== КАТАЛОГ ФОРМУЛ ==================== */
+.formulas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.formula-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.formula-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px var(--shadow);
+    transform: translateY(-5px);
+}
+
+.formula-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+}
+
+.formula-card.easy::before { background: #00cc00; }
+.formula-card.medium::before { background: #ffaa00; }
+.formula-card.hard::before { background: #ff4400; }
+.formula-card.extreme::before { background: #cc00cc; }
+.formula-card.cicada::before { background: linear-gradient(#00ff41, #ff0041, #aa00ff); }
+
+.formula-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.formula-card .badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.badge.easy { background: #00cc0022; color: #00cc00; border: 1px solid #00cc0055; }
+.badge.medium { background: #ffaa0022; color: #ffaa00; border: 1px solid #ffaa0055; }
+.badge.hard { background: #ff440022; color: #ff4400; border: 1px solid #ff440055; }
+.badge.extreme { background: #cc00cc22; color: #cc00cc; border: 1px solid #cc00cc55; }
+.badge.cicada { background: #00ff4111; color: var(--accent); border: 1px solid var(--accent); }
+
+.formula-card .preview {
+    font-size: 14px;
+    opacity: 0.7;
+    margin: 15px 0;
+    word-break: break-all;
+    line-height: 1.6;
+}
+
+.formula-card .stats {
+    font-size: 11px;
+    opacity: 0.5;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ==================== СТРАНИЦА ФОРМУЛЫ ==================== */
+.article {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 40px;
+    margin: 30px 0;
+}
+
+.article h2 {
+    font-size: 28px;
+    letter-spacing: 5px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px var(--accent);
+}
+
+.article .meta {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+.article .formula-box {
+    background: var(--bg);
+    border-left: 4px solid var(--accent);
+    padding: 25px;
+    margin: 25px 0;
+    font-size: 16px;
+    line-height: 2;
+    word-break: break-all;
+    overflow-x: auto;
+    border-radius: 4px;
+}
+
+.article h3 {
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin: 30px 0 15px;
+}
+
+.article p {
+    font-size: 14px;
+    line-height: 1.9;
+    opacity: 0.85;
+    margin: 12px 0;
+}
+
+/* ==================== КОММЕНТАРИИ ==================== */
+.comments-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid var(--border);
+}
+
+.comments-section h3 {
+    font-size: 18px;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 15px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    border-radius: 4px;
+    transition: border 0.3s;
+}
+
+.comment-form textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--shadow);
+}
+
+.comment-form button {
+    align-self: flex-end;
+    padding: 12px 30px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-weight: 700;
+}
+
+.comment-form button:hover {
+    box-shadow: 0 0 25px var(--accent);
+    transform: scale(1.03);
+}
+
+.comment {
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    animation: fadeIn 0.4s;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    opacity: 0.6;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.comment-author {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.comment-text {
+    font-size: 14px;
+    line-height: 1.7;
+    opacity: 0.9;
+}
+
+.comment-actions {
+    margin-top: 10px;
+    font-size: 11px;
+    opacity: 0.5;
+}
+
+.comment-actions button {
+    background: none;
+    border: none;
+    color: var(--accent2);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    opacity: 0.7;
+    margin-right: 15px;
+}
+
+.comment-actions button:hover { opacity: 1; }
+
+/* ==================== ФОРУМ ==================== */
+.forum-thread {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 25px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.forum-thread:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--shadow);
+}
+
+.forum-thread h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.forum-thread .meta {
+    font-size: 12px;
+    opacity: 0.5;
+    letter-spacing: 1px;
+}
+
+.forum-thread .excerpt {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+/* ==================== ФОРМА НОВОЙ ТЕМЫ ==================== */
+.new-thread-form {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.new-thread-form h3 {
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+.new-thread-form input,
+.new-thread-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    border-radius: 4px;
+    transition: border 0.3s;
+}
+
+.new-thread-form input:focus,
+.new-thread-form textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--shadow);
+}
+
+.new-thread-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.new-thread-form button {
+    padding: 15px 40px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-weight: 700;
+}
+
+.new-thread-form button:hover {
+    box-shadow: 0 0 25px var(--accent);
+    transform: scale(1.03);
+}
+
+/* ==================== ФУТЕР ==================== */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 11px;
+    opacity: 0.4;
+    letter-spacing: 3px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+}
+
+/* ==================== МОБИЛЬНАЯ ==================== */
+@media (max-width: 700px) {
+    .hero h1 { font-size: 24px; letter-spacing: 5px; }
+    .hero .logo { font-size: 50px; }
+    .formulas-grid { grid-template-columns: 1fr; }
+    .article { padding: 25px; }
+    .article h2 { font-size: 20px; }
+    nav { padding: 12px 15px; }
+    .nav-links { gap: 8px; }
+    .nav-links a { font-size: 11px; padding: 6px 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== НАВИГАЦИЯ ==================== -->
+<nav>
+    <div class="nav-logo" onclick="showPage('home')">🦗 CICADA WIKI</div>
+    <div class="nav-links">
+        <a onclick="showPage('home')" id="nav-home" class="active">ГЛАВНАЯ</a>
+        <a onclick="showPage('formulas')" id="nav-formulas">ФОРМУЛЫ</a>
+        <a onclick="showPage('forum')" id="nav-forum">ФОРУМ</a>
+    </div>
+    <button class="settings-btn" onclick="toggleSettings()">⚙</button>
+</nav>
+
+<!-- ==================== НАСТРОЙКИ ==================== -->
+<div class="settings-panel" id="settings-panel">
+    <button class="close-settings" onclick="toggleSettings()">×</button>
+    <h3>НАСТРОЙКИ</h3>
+    <p style="font-size: 12px; opacity: 0.6; margin-bottom: 20px;">ТЕМА</p>
+    <button class="theme-btn active" onclick="setTheme('dark', this)">🌑 ТЁМНАЯ</button>
+    <button class="theme-btn" onclick="setTheme('light', this)">☀ СВЕТЛАЯ</button>
+    <button class="theme-btn" onclick="setTheme('matrix', this)">🟢 МАТРИЦА</button>
+    <button class="theme-btn" onclick="setTheme('amber', this)">🟠 ЯНТАРЬ</button>
+    <p style="font-size: 12px; opacity: 0.6; margin: 25px 0 20px;">ДАННЫЕ</p>
+    <button class="theme-btn" onclick="resetAll()">🗑 СБРОСИТЬ ВСЁ</button>
+</div>
+
+<!-- ==================== СТРАНИЦА: ГЛАВНАЯ ==================== -->
+<div class="page active" id="page-home">
+    <div class="hero">
+        <div class="logo">🦗</div>
+        <h1>CICADA WIKI</h1>
+        <p>ГУГОЛОГИЧЕСКАЯ ЭНЦИКЛОПЕДИЯ</p>
+        <p>ФОРМУЛЫ · ОБЪЯСНЕНИЯ · ОБСУЖДЕНИЯ</p>
+    </div>
+    
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="🔍 Поиск формулы..." oninput="searchFormulas()">
+        </div>
+        
+        <h2 style="text-align: center; margin: 40px 0 20px; letter-spacing: 5px;">КАТАЛОГ ФОРМУЛ</h2>
+        <div class="formulas-grid" id="home-formulas-grid"></div>
+    </div>
+</div>
+
+<!-- ==================== СТРАНИЦА: ВСЕ ФОРМУЛЫ ==================== -->
+<div class="page" id="page-formulas">
+    <div class="container">
+        <h2 style="text-align: center; margin: 20px 0; letter-spacing: 5px;">ВСЕ ФОРМУЛЫ</h2>
+        <div class="search-box">
+            <input type="text" id="search-input-2" placeholder="🔍 Поиск..." oninput="searchFormulas2()">
+        </div>
+        <div class="formulas-grid" id="formulas-grid"></div>
+    </div>
+</div>
+
+<!-- ==================== СТРАНИЦА: ФОРМУЛА ==================== -->
+<div class="page" id="page-article">
+    <div class="container">
+        <div id="article-content"></div>
+    </div>
+</div>
+
+<!-- ==================== СТРАНИЦА: ФОРУМ ==================== -->
+<div class="page" id="page-forum">
+    <div class="container">
+        <h2 style="text-align: center; margin: 20px 0; letter-spacing: 5px;">ФОРУМ</h2>
+        
+        <div class="new-thread-form">
+            <h3>СОЗДАТЬ ТЕМУ</h3>
+            <input type="text" id="thread-title" placeholder="Заголовок темы...">
+            <textarea id="thread-text" placeholder="Текст сообщения..."></textarea>
+            <button onclick="createThread()">СОЗДАТЬ</button>
+        </div>
+        
+        <div id="forum-threads"></div>
+    </div>
+</div>
+
+<!-- ==================== СТРАНИЦА: ТЕМА ==================== -->
+<div class="page" id="page-thread">
+    <div class="container">
+        <div id="thread-content"></div>
+    </div>
+</div>
+
+<footer>
+    CICADA WIKI © 2026 · ВСЕ КОММЕНТАРИИ АНОНИМНЫ
+</footer>
+
+<script>
+// ==================== ДАННЫЕ ФОРМУЛ ====================
+
+const FORMULAS = [
+    {
+        id: 'mult', name: 'УМНОЖЕНИЕ', badge: 'easy', badgeText: 'ЛЁГКИЙ',
+        preview: '134 × 142 = 19028',
+        desc: 'Простое умножение. Разминка.',
+        formula: '134 × 142 = ?',
+        solution: 'Умножаем: 134 × 142 = 134 × (100 + 42) = 13400 + 5628 = 19028.',
+        answer: '19028'
+    },
+    {
+        id: 'power', name: 'СТЕПЕНЬ', badge: 'easy', badgeText: 'ЛЁГКИЙ',
+        preview: '2¹⁰ = 1024',
+        desc: 'Степень двойки.',
+        formula: '2¹⁰ = ?',
+        solution: '2¹⁰ = 2 × 2 × ... × 2 (10 раз) = 1024.',
+        answer: '1024'
+    },
+    {
+        id: 'factorial', name: 'ФАКТОРИАЛ', badge: 'easy', badgeText: 'ЛЁГКИЙ',
+        preview: '5! = 120',
+        desc: 'Факториал. Быстро растёт.',
+        formula: '5! = ?',
+        solution: '5! = 1 × 2 × 3 × 4 × 5 = 120.',
+        answer: '120'
+    },
+    {
+        id: 'googol', name: 'ГУГОЛ', badge: 'easy', badgeText: 'ЛЁГКИЙ',
+        preview: '10¹⁰⁰',
+        desc: 'Гугол. Первое «большое» число.',
+        formula: '10¹⁰⁰ = ?',
+        solution: 'Гугол — это 10¹⁰⁰, единица со 100 нулями.',
+        answer: '10¹⁰⁰ (гугол)'
+    },
+    {
+        id: 'googolplex', name: 'ГУГОЛПЛЕКС', badge: 'medium', badgeText: 'СРЕДНИЙ',
+        preview: '10^(10¹⁰⁰)',
+        desc: 'Гуголплекс. Гугол в степени гугол.',
+        formula: '10^(10¹⁰⁰) = ?',
+        solution: 'Гуголплекс — это 10 в степени гугол, то есть 10^(10¹⁰⁰).',
+        answer: '10^(10¹⁰⁰) (гуголплекс)'
+    },
+    {
+        id: 'graham', name: 'ЧИСЛО ГРЭМА', badge: 'medium', badgeText: 'СРЕДНИЙ',
+        preview: 'g₆₄ = 3 ↑↑↑↑ 3 ...',
+        desc: 'Классика гугологии.',
+        formula: 'g₁ = 3 ↑↑↑↑ 3\\ngₙ₊₁ = 3 ↑^(gₙ) 3\\ng₆₄ = ?',
+        solution: 'Число Грэма — g₆₄. Использует 64 уровня стрелок Кнута.',
+        answer: 'g₆₄ (число Грэма)'
+    },
+    {
+        id: 'tree', name: 'TREE(3)', badge: 'medium', badgeText: 'СРЕДНИЙ',
+        preview: 'TREE(3) > g₆₄',
+        desc: 'Теорема Краскала.',
+        formula: 'TREE(3) = max{ n : последовательность из n деревьев с 3 цветами }',
+        solution: 'TREE(3) > g₆₄. Это доказано.',
+        answer: 'TREE(3) > g₆₄'
+    },
+    {
+        id: 'sscg', name: 'SSCG(3)', badge: 'hard', badgeText: 'СЛОЖНЫЙ',
+        preview: 'SSCG(3) > TREE(3)',
+        desc: 'Подкубические графы.',
+        formula: 'SSCG(3) = max{ n : последовательность подкубических графов }',
+        solution: 'SSCG(3) > TREE(3). Доказано.',
+        answer: 'SSCG(3) > TREE(3)'
+    },
+    {
+        id: 'bb', name: 'ФУНКЦИЯ ЗАНЯТОГО БОБРА', badge: 'hard', badgeText: 'СЛОЖНЫЙ',
+        preview: 'BB(n) — невычислима',
+        desc: 'Самая мощная вычислимая функция.',
+        formula: 'BB(n) = max{ k : ∃ машина Тьюринга с n состояниями, останавливается за k шагов }',
+        solution: 'BB(n) растёт быстрее любой вычислимой функции. BB(10⁶) >> TREE(3).',
+        answer: 'BB(n) невычислима.'
+    },
+    {
+        id: 'loader', name: 'LOADER', badge: 'hard', badgeText: 'СЛОЖНЫЙ',
+        preview: 'Loader(10¹⁰⁰)',
+        desc: 'Самая мощная вычислимая функция.',
+        formula: 'Loader(n) = max{ k : вычислимо calculus of constructions }',
+        solution: 'Loader(10¹⁰⁰) >> BB(10⁶).',
+        answer: 'Loader(10¹⁰⁰) >> BB(10⁶)'
+    },
+    {
+        id: 'rayo', name: 'ФУНКЦИЯ RAYO', badge: 'extreme', badgeText: 'ЭКСТРИМ',
+        preview: 'Rayo(n) — больше BB',
+        desc: 'Число, которое нельзя выразить n символами.',
+        formula: 'Rayo(n) = max{ k : k выразимо менее чем n символами }',
+        solution: 'Rayo(10¹⁰⁰) >> BB(10⁶). За пределами ZFC.',
+        answer: 'Rayo(10¹⁰⁰) >> BB(10⁶)'
+    },
+    {
+        id: 'riemann', name: 'ГИПОТЕЗА РИМАНА', badge: 'extreme', badgeText: 'ЭКСТРИМ',
+        preview: 'ζ(s) = 0 ⇒ Re(s) = 1/2',
+        desc: 'Не решена с 1859 года.',
+        formula: 'ζ(s) = Σ 1/nˢ = Π (1 - p⁻ˢ)⁻¹\\nζ(s) = 0 ⇒ Re(s) = 1/2',
+        solution: 'Не решена 160+ лет. Приз — $1 000 000.',
+        answer: 'Не решена.'
+    },
+    {
+        id: 'ordinals', name: 'ОРДИНАЛЫ', badge: 'extreme', badgeText: 'ЭКСТРИМ',
+        preview: 'ε₀, Γ₀, Ω',
+        desc: 'Трансфинитные ординалы.',
+        formula: 'ε₀ = sup{ω, ω^ω, ω^(ω^ω), ...}\\nΓ₀ = sup{φ_α(0) : α < Γ₀}',
+        solution: 'ε₀ — наименьший ординал с ω^ε = ε. Γ₀ — ординал Фефермана-Шютте.',
+        answer: 'ε₀, Γ₀, Ω'
+    },
+    {
+        id: 'ttgs', name: 'TTGS-Ω', badge: 'cicada', badgeText: 'ЦИКАДА',
+        preview: '𝔗_Ω = [Ξ · Λ · Ψ · Θ · Φ · Σ]^⇑^Ω',
+        desc: 'Наша формула. Соединяет всё.',
+        formula: '𝔗_Ω = [ Ξ_Мат · Λ_Физ · Ψ_Транс · Θ_Орд · Φ_Гео · Σ_Рим ]^(⇑^(Ω^Ω^Ω^Ω^Ω))',
+        solution: 'TTGS-Ω — авторская нотация. Соединяет: число Грэма, TREE(3), SSCG(3), BB, Rayo, Loader, ординалы, кардиналы, 14480-мерную геометрию, уравнения Эйнштейна, гипотезу Римана, 10 двигателей.',
+        answer: '𝔗_Ω >> Rayo(Rayo(10¹⁰⁰)) >> TREE(3) >> g₆₄'
+    },
+    {
+        id: 'cicada', name: 'CICADA ULTIMATE', badge: 'cicada', badgeText: 'ЦИКАДА',
+        preview: 'Финал. Ты — ключ.',
+        desc: 'Последний уровень. Ответ — ты.',
+        formula: 'Ты дошёл. Ты — ключ. Ты — Цикада-Ω.',
+        solution: 'Это финальный уровень. Если ты дошёл — ты прошёл весь путь.',
+        answer: 'Ты — ключ. Ты — Цикада-Ω.'
+    }
+];
+
+// ==================== ХРАНИЛИЩЕ ====================
+
+let comments = JSON.parse(localStorage.getItem('cicada_comments') || '{}');
+let threads = JSON.parse(localStorage.getItem('cicada_threads') || '[]');
+
+function saveComments() {
+    localStorage.setItem('cicada_comments', JSON.stringify(comments));
+}
+
+function saveThreads() {
+    localStorage.setItem('cicada_threads', JSON.stringify(threads));
+}
+
+// ==================== НАВИГАЦИЯ ====================
+
+function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+    const pageEl = document.getElementById(`page-${page}`);
+    if (pageEl) pageEl.classList.add('active');
+
+    const navEl = document.getElementById(`nav-${page}`);
+    if (navEl) navEl.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (page === 'home' || page === 'formulas') {
+        renderFormulaCards();
+    }
+    if (page === 'forum') {
+        renderThreads();
+    }
+}
+
+// ==================== РЕНДЕР КАРТОЧЕК ====================
+
+function renderFormulaCards() {
+    const gridHome = document.getElementById('home-formulas-grid');
+    const gridAll = document.getElementById('formulas-grid');
+
+    const html = FORMULAS.map(f => `
+        <div class="formula-card ${f.badge}" onclick="openArticle('${f.id}')">
+            <span class="badge ${f.badge}">${f.badgeText}</span>
+            <h3>${f.name}</h3>
+            <div class="preview">${f.preview}</div>
+            <div class="stats">
+                <span>💬 ${(comments[f.id] || []).length} комм.</span>
+                <span>→ читать</span>
+            </div>
+        </div>
+    `).join('');
+
+    if (gridHome) gridHome.innerHTML = html;
+    if (gridAll) gridAll.innerHTML = html;
+}
+
+// ==================== СТРАНИЦА ФОРМУЛЫ ====================
+
+function openArticle(id) {
+    const f = FORMULAS.find(x => x.id === id);
+    if (!f) return;
+
+    const articleComments = comments[id] || [];
+
+    document.getElementById('article-content').innerHTML = `
+        <div class="article">
+            <h2>${f.name}</h2>
+            <span class="badge ${f.badge}">${f.badgeText}</span>
+            <div class="meta">🦗 CICADA WIKI · СТАТЬЯ</div>
+            
+            <div class="formula-box">${f.formula.replace(/\\n/g, '<br>')}</div>
+            
+            <h3>ОБЪЯСНЕНИЕ</h3>
+            <p>${f.solution}</p>
+            
+            <h3>ОТВЕТ</h3>
+            <div class="formula-box" style="border-left-color: ${'var(--accent)'};">${f.answer}</div>
+            
+            <div class="comments-section">
+                <h3>💬 КОММЕНТАРИИ (${articleComments.length})</h3>
+                
+                <div class="comment-form">
+                    <textarea id="comment-text-${id}" placeholder="Написать комментарий (анонимно)..."></textarea>
+                    <button onclick="addComment('${id}')">ОТПРАВИТЬ</button>
+                </div>
+                
+                <div id="comments-list-${id}">
+                    ${articleComments.length === 0 ? '<p style="opacity: 0.5; text-align: center; padding: 20px;">Комментариев пока нет. Будь первым!</p>' : ''}
+                    ${articleComments.map((c, i) => `
+                        <div class="comment">
+                            <div class="comment-header">
+                                <span class="comment-author">👤 Аноним #${c.anonId}</span>
+                                <span>${c.date}</span>
+                            </div>
+                            <div class="comment-text">${escapeHtml(c.text)}</div>
+                            <div class="comment-actions">
+                                <button onclick="deleteComment('${id}', ${i})">🗑 Удалить</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    showPage('article');
+}
+
+// ==================== КОММЕНТАРИИ ====================
+
+function addComment(id) {
+    const textarea = document.getElementById(`comment-text-${id}`);
+    const text = textarea.value.trim();
+    if (!text) return;
+
+    if (!comments[id]) comments[id] = [];
+
+    const anonId = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+    const date = new Date().toLocaleString('ru-RU');
+
+    comments[id].push({ text, anonId, date });
+    saveComments();
+
+    openArticle(id);
+    renderFormulaCards();
+}
+
+function deleteComment(id, index) {
+    if (!confirm('Удалить комментарий?')) return;
+    comments[id].splice(index, 1);
+    saveComments();
+    openArticle(id);
+    renderFormulaCards();
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ==================== ПОИСК ====================
+
+function searchFormulas() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    filterGrid('home-formulas-grid', query);
+}
+
+function searchFormulas2() {
+    const query = document.getElementById('search-input-2').value.toLowerCase();
+    filterGrid('formulas-grid', query);
+}
+
+function filterGrid(gridId, query) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+
+    const filtered = FORMULAS.filter(f =>
+        f.name.toLowerCase().includes(query) ||
+        f.desc.toLowerCase().includes(query) ||
+        f.preview.toLowerCase().includes(query)
+    );
+
+    grid.innerHTML = filtered.map(f => `
+        <div class="formula-card ${f.badge}" onclick="openArticle('${f.id}')">
+            <span class="badge ${f.badge}">${f.badgeText}</span>
+            <h3>${f.name}</h3>
+            <div class="preview">${f.preview}</div>
+            <div class="stats">
+                <span>💬 ${(comments[f.id] || []).length} комм.</span>
+                <span>→ читать</span>
+            </div>
+        </div>
+    `).join('') || '<p style="text-align: center; opacity: 0.5; padding: 40px;">Ничего не найдено</p>';
+}
+
+// ==================== ФОРУМ ====================
+
+function createThread() {
+    const title = document.getElementById('thread-title').value.trim();
+    const text = document.getElementById('thread-text').value.trim();
+    if (!title || !text) return;
+
+    const anonId = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+    const date = new Date().toLocaleString('ru-RU');
+
+    threads.unshift({
+        id: Date.now(),
+        title,
+        text,
+        anonId,
+        date,
+        replies: []
+    });
+
+    saveThreads();
+    document.getElementById('thread-title').value = '';
+    document.getElementById('thread-text').value = '';
+    renderThreads();
+}
+
+function renderThreads() {
+    const container = document.getElementById('forum-threads');
+    if (!container) return;
+
+    if (threads.length === 0) {
+        container.innerHTML = '<p style="text-align: center; opacity: 0.5; padding: 40px;">Тем пока нет. Создай первую!</p>';
+        return;
+    }
+
+    container.innerHTML = threads.map(t => `
+        <div class="forum-thread" onclick="openThread(${t.id})">
+            <h3>${escapeHtml(t.title)}</h3>
+            <div class="meta">👤 Аноним #${t.anonId} · ${t.date} · 💬 ${t.replies.length}</div>
+            <div class="excerpt">${escapeHtml(t.text.substring(0, 150))}${t.text.length > 150 ? '...' : ''}</div>
+        </div>
+    `).join('');
+}
+
+function openThread(id) {
+    const t = threads.find(x => x.id === id);
+    if (!t) return;
+
+    document.getElementById('thread-content').innerHTML = `
+        <div class="article">
+            <h2>${escapeHtml(t.title)}</h2>
+            <div class="meta">👤 Аноним #${t.anonId} · ${t.date}</div>
+            <p style="margin-top: 20px; font-size: 15px; line-height: 1.8;">${escapeHtml(t.text)}</p>
+            
+            <div class="comments-section">
+                <h3>💬 ОТВЕТЫ (${t.replies.length})</h3>
+                
+                <div class="comment-form">
+                    <textarea id="reply-text" placeholder="Написать ответ (анонимно)..."></textarea>
+                    <button onclick="addReply(${id})">ОТВЕТИТЬ</button>
+                </div>
+                
+                <div>
+                    ${t.replies.length === 0 ? '<p style="opacity: 0.5; text-align: center; padding: 20px;">Ответов пока нет.</p>' : ''}
+                    ${t.replies.map((r, i) => `
+                        <div class="comment">
+                            <div class="comment-header">
+                                <span class="comment-author">👤 Аноним #${r.anonId}</span>
+                                <span>${r.date}</span>
+                            </div>
+                            <div class="comment-text">${escapeHtml(r.text)}</div>
+                            <div class="comment-actions">
+                                <button onclick="deleteReply(${id}, ${i})">🗑 Удалить</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    showPage('thread');
+}
+
+function addReply(threadId) {
+    const textarea = document.getElementById('reply-text');
+    const text = textarea.value.trim();
+    if (!text) return;
+
+    const t = threads.find(x => x.id === threadId);
+    if (!t) return;
+
+    const anonId = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+    const date = new Date().toLocaleString('ru-RU');
+
+    t.replies.push({ text, anonId, date });
+    saveThreads();
+    openThread(threadId);
+}
+
+function deleteReply(threadId, index) {
+    if (!confirm('Удалить ответ?')) return;
+    const t = threads.find(x => x.id === threadId);
+    if (!t) return;
+    t.replies.splice(index, 1);
+    saveThreads();
+    openThread(threadId);
+}
+
+// ==================== НАСТРОЙКИ ====================
+
+function toggleSettings() {
+    document.getElementById('settings-panel').classList.toggle('active');
+}
+
+function setTheme(theme, btn) {
+    document.body.className = theme === 'dark' ? '' : `theme-${theme}`;
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    localStorage.setItem('cicada_theme', theme);
+}
+
+function resetAll() {
+    if (confirm('Сбросить ВСЁ (комментарии, темы, настройки)?')) {
+        localStorage.clear();
+        comments = {};
+        threads = [];
+        document.body.className = '';
+        renderFormulaCards();
+        renderThreads();
+        showPage('home');
+    }
+}
+
+// ==================== ИНИЦИАЛИЗАЦИЯ ====================
+
+const savedTheme = localStorage.getItem('cicada_theme') || 'dark';
+if (savedTheme !== 'dark') {
+    document.body.className = `theme-${savedTheme}`;
+}
+
+renderFormulaCards();
+
+document.getElementById('modal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'modal') closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        document.getElementById('settings-panel').classList.remove('active');
+    }
+});
+
+console.log('%c🦗 CICADA WIKI', 'font-size: 24px; color: #00ff41; text-shadow: 0 0 10px #00ff41;');
+console.log('%cГугологическая энциклопедия.', 'font-size: 14px; color: #00ff41;');
+console.log('%cВсе комментарии анонимны.', 'font-size: 12px; color: #ff0041;');
+</script>
+</body>
+</html>
